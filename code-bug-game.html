@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Scramble / Bug Hunt - Multi-Language Auto Progress</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .welcome-page {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .welcome-page h2 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .welcome-page p {
+            font-size: 1.25rem;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .welcome-page .instructions-list {
+            list-style: none;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            text-align: left;
+            font-size: 1.1rem;
+            color: #333;
+            padding: 0;
+        }
+
+        .welcome-page .instructions-list li::before {
+            content: '👉';
+            position: absolute;
+            left: 0;
+            color: #764ba2;
+            font-size: 1.2rem;
+        }
+
+        #completion-popup {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        #completion-popup h2 {
+            font-size: 2.5rem;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #555;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        /* Game Controls */
+        .game-controls {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .difficulty-selector,
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-btn,
+        .language-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .difficulty-btn.active,
+        .difficulty-btn:hover,
+        .language-btn.active,
+        .language-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .difficulty-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            background: #f0f0f0;
+            color: #999;
+            border-color: #ddd;
+        }
+
+        .difficulty-btn.completed {
+            background: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+
+        .difficulty-btn.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .progression-info {
+            background: #e8f4f8;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            color: #0056b3;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .progression-info.auto-advance {
+            background: #d1ecf1;
+            border-color: #bee5eb;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+            }
+
+            to {
+                box-shadow: 0 0 25px rgba(102, 126, 234, 0.9);
+            }
+        }
+
+        .score-board {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .score-item {
+            background: #f8f9fa;
+            padding: 12px 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            min-width: 90px;
+        }
+
+        .score-item strong {
+            display: block;
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Game Area */
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .code-panel {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 25px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .code-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            white-space: pre-wrap;
+            word-break: break-word;
+            flex-grow: 1;
+        }
+
+        .language-tag {
+            background: #667eea;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .bug-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+            line-height: 1.5;
+        }
+
+        .bug-info h4 {
+            color: #856404;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .bug-info p {
+            margin: 0;
+        }
+
+        .answer-section {
+            margin-top: auto;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .check-btn,
+        .skip-btn {
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .check-btn {
+            background: #28a745;
+        }
+
+        .check-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .skip-btn {
+            background: #6c757d;
+        }
+
+        .skip-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 10px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .feedback.level-up {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            animation: celebrateGlow 1s ease-in-out 3;
+        }
+
+        @keyframes celebrateGlow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: none;
+            }
+
+            50% {
+                transform: scale(1.02);
+                background: #c3e6cb;
+                box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+            }
+        }
+
+        .timer {
+            background: #fff;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .difficulty-selector,
+            .language-selector,
+            .score-board {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .start-btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .score-item {
+                flex-grow: 1;
+            }
+
+            .timer {
+                width: 70px;
+                height: 70px;
+                font-size: 1.1rem;
+            }
+
+            .code-content {
+                padding: 15px;
+            }
+
+            .code-block {
+                font-size: 13px;
+            }
+
+            .answer-input {
+                padding: 12px;
+                font-size: 13px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .check-btn,
+            .skip-btn {
+                width: 100%;
+            }
+        }
+
+        /* Custom Popup Styles */
+        #custom-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .popup-content h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .popup-content p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        #popup-close-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #popup-close-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .popup-success h3 {
+            color: #28a745;
+        }
+
+        .popup-error h3 {
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="welcome-page" class="welcome-page">
+            <h2>Welcome to Bug Hunt!</h2>
+            <p>Ready to test your coding skills? Find and fix bugs in various programming languages to become a
+                debugging master!</p>
+            <div class="language-selector" style="justify-content: center; margin-bottom: 20px;">
+                <span>Select Language:</span>
+                <button class="language-btn active" data-language="JavaScript">JS</button>
+                <button class="language-btn" data-language="Python">Python</button>
+                <button class="language-btn" data-language="Java">Java</button>
+                <button class="language-btn" data-language="DotNet">DotNet</button>
+                <button class="language-btn" data-language="SQL">SQL</button>
+            </div>
+
+            <ul class="instructions-list">
+                <li>👉Identify and fix bugs in code snippets.</li>
+                <li>👉Select a Difficulty (Easy, Medium, Hard) and a Language.</li>
+                <li>👉You have limited time per puzzle.</li>
+                <li>👉Complete 3 questions in a difficulty to unlock the next level!</li>
+                <li>👉Use <strong>Ctrl + Enter</strong> to submit your solution.</li>
+            </ul>
+            <button class="start-btn" id="welcome-start-btn">Start Game</button>
+        </div>
+        <div id="completion-popup" class="welcome-page hidden">
+            <h2>🎉 Congratulations!</h2>
+            <p id="completion-message">You've completed all levels and became a Bug Hunt Champion!</p>
+            <p id="final-score-display" style="font-size: 1.5rem; color: #444;"></p>
+            <button class="start-btn" id="play-again-btn">Play Again</button>
+        </div>
+
+
+        <div class="header hidden">
+            <h1>🐛 Code Scramble / Bug Hunt 🔍</h1>
+            <p>Find and fix the bugs in the code snippets! Complete challenges to unlock harder levels!</p>
+        </div>
+
+        <div class="game-controls hidden">
+            <div class="progression-info" id="progression-info">
+                🎯 Complete 3 questions to advance to the next level!
+            </div>
+
+            <div class="controls-row">
+                <div class="difficulty-selector">
+                    <span>Levels:</span>
+                    <button class="difficulty-btn active" data-difficulty="easy">Level 1</button>
+                    <button class="difficulty-btn" data-difficulty="medium" disabled>Level 2</button>
+                    <button class="difficulty-btn" data-difficulty="hard" disabled>Level 3</button>
+                </div>
+
+                <div class="score-board">
+                    <div class="score-item">
+                        <strong id="current-score">0</strong>
+                        <span>Score</span>
+                    </div>
+
+                    <div class="score-item">
+                        <strong id="questions-completed">0/3</strong>
+                        <span>Completed</span>
+                    </div>
+                    <div class="timer" id="timer">30</div>
+                </div>
+
+                <button class="start-btn" id="start-game">Restart Game</button>
+            </div>
+        </div>
+
+        <div class="game-area hidden" id="game-area">
+            <div class="code-panel">
+                <div class="panel-header">
+                    🐛 Buggy Code
+                </div>
+                <div class="code-content">
+                    <div class="language-tag" id="language-tag"></div>
+                    <div class="bug-info">
+                        <h4>Bug Type: <span id="bug-type"></span></h4>
+                        <p id="bug-description"></p>
+                    </div>
+                    <div class="code-block" id="buggy-code">
+                        Click "Start Game" to begin!
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-panel">
+                <div class="panel-header">
+                    ✅ Your Solution
+                </div>
+                <div class="code-content">
+                    <div class="answer-section">
+                        <textarea class="answer-input" id="answer-input" placeholder="Enter your fixed code here..."
+                            rows="8"></textarea>
+                        <div class="action-buttons">
+                            <button class="check-btn" id="check-answer">Check Answer</button>
+                            <button class="skip-btn" id="skip-question">Skip Question</button>
+                        </div>
+                        <div class="feedback hidden" id="feedback"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-popup" class="hidden">
+        <div class="popup-content">
+            <h3 id="popup-title"></h3>
+            <p id="popup-message"></p>
+            <button id="popup-close-btn">OK</button>
+        </div>
+    </div>
+
+    <script>
+        class CodeScrambleGame {
+            constructor() {
+                this.currentDifficulty = 'easy';
+                this.selectedLanguage = 'JavaScript'; // Default selected language
+                this.score = 0;
+                this.timeLeft = 60;
+                this.gameActive = false;
+                this.currentQuestion = null;
+                this.timer = null;
+                this.currentIndex = 0;
+                this.timerConfig = {
+                    initialTime: 60,
+                    bonusTimeCorrect: 5,
+                    penaltyTimeIncorrect: 10,
+                    penaltyTimeSkip: 15
+                };
+
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.selectedLanguage = btn.dataset.language;
+                        this.prepareBugDatabase(); // Load new language's questions
+                    });
+                });
+
+                // Auto-progression tracking
+                this.questionsCompleted = { easy: 0, medium: 0, hard: 0 };
+                this.questionsNeededToAdvance = 3;
+                this.unlockedLevels = ['easy']; // Track which levels are unlocked
+                this.completedLevels = []; // Track completed levels
+
+                this.allBugs = {};
+                this.bugDatabase = {}; // Will be dynamically built
+
+
+                // Assume bugs-mul.json is correctly structured for multiple languages
+                fetch('bugs-mul.json')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.config && data.config.timer) {
+                            this.timerConfig = data.config.timer;
+                        }
+                        delete data.config; // remove config so only language blocks remain
+                        this.allBugs = data;
+                        this.prepareBugDatabase();
+                    })
+                    .catch(err => {
+                        console.error('Failed to load bug data:', err);
+                        alert('Error loading questions. Please ensure bugs-mul.json is available and correctly formatted.');
+                    });
+
+
+                this.initializeEventListeners();
+                this.updateProgressionInfo();
+                this.updateDisplay(); // Initial display update
+            }
+            prepareBugDatabase() {
+                const langData = this.allBugs[this.selectedLanguage];
+                if (!langData) {
+                    console.warn(`No questions available for ${this.selectedLanguage}. Falling back to JavaScript.`);
+                    this.bugDatabase = {};
+                    return;
+                }
+
+                this.bugDatabase = {};
+                ['easy', 'medium', 'hard'].forEach(level => {
+                    this.bugDatabase[level] = langData[level] || [];
+                });
+            }
+
+            showNextQuestion() {
+                const questions = this.bugDatabase[this.currentDifficulty];
+                if (!questions || this.currentIndex >= questions.length) {
+                    alert("No more questions!");
+                    return;
+                }
+
+                this.currentQuestion = questions[this.currentIndex++];
+                document.getElementById("language-tag").textContent = this.selectedLanguage;
+                document.getElementById("bug-type").textContent = this.currentQuestion.bugType;
+                document.getElementById("bug-description").textContent = this.currentQuestion.description;
+                document.getElementById("buggy-code").textContent = this.currentQuestion.buggyCode;
+                document.getElementById("answer-input").value = "";
+                document.getElementById("feedback").classList.add("hidden");
+            }
+            showWelcomePage() {
+                document.getElementById('welcome-page').classList.remove('hidden');
+                document.querySelector('.header').classList.add('hidden');
+                document.querySelector('.game-controls').classList.add('hidden');
+                document.getElementById('game-area').classList.add('hidden');
+                document.getElementById('completion-popup').classList.add('hidden');
+                clearInterval(this.timer);
+                this.gameActive = false;
+                document.getElementById('timer').classList.remove('pulse');
+            }
+
+            hideWelcomePage() {
+                document.getElementById('welcome-page').classList.add('hidden');
+                document.querySelector('.header').classList.remove('hidden');
+                document.querySelector('.game-controls').classList.remove('hidden');
+                document.getElementById('game-area').classList.remove('hidden');
+            }
+
+            initializeEventListeners() {
+                document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const targetDifficulty = e.target.dataset.difficulty;
+                        if (this.unlockedLevels.includes(targetDifficulty)) {
+                            document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+                            e.target.classList.add('active');
+                            this.currentDifficulty = targetDifficulty;
+                            this.updateProgressionInfo();
+                            if (this.gameActive) {
+                                this.loadNewQuestion();
+                            }
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.selectedLanguage = e.target.dataset.language;
+                        this.prepareBugDatabase();
+                    });
+                });
+
+                document.getElementById('start-game').addEventListener('click', () => this.showWelcomePage());
+                document.getElementById('check-answer').addEventListener('click', () => this.checkAnswer());
+                document.getElementById('skip-question').addEventListener('click', () => this.skipQuestion());
+
+                document.getElementById('answer-input').addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        e.preventDefault();
+                        this.checkAnswer();
+                    }
+                });
+            }
+
+            startGame() {
+                this.gameActive = true;
+                this.score = 0;
+                this.timeLeft = this.timerConfig.initialTime;
+                this.questionsCompleted = { easy: 0, medium: 0, hard: 0 };
+                this.unlockedLevels = ['easy'];
+                this.completedLevels = [];
+                document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                    btn.classList.remove('active', 'completed');
+                    if (btn.dataset.difficulty !== 'easy') {
+                        btn.disabled = true;
+                        btn.style.opacity = '0.6';
+                        btn.style.cursor = 'not-allowed';
+                    }
+                });
+                document.querySelector('[data-difficulty="easy"]').classList.add('active');
+                this.currentDifficulty = 'easy';
+
+                document.getElementById('game-area').classList.remove('hidden');
+                document.getElementById('progression-info').classList.remove('hidden');
+                document.getElementById('start-game').textContent = 'Restart Game';
+
+                this.loadNewQuestion();
+                this.startTimer();
+                this.updateDisplay();
+                this.updateProgressionInfo();
+            }
+
+
+            loadNewQuestion() {
+                const availableQuestions = this.bugDatabase[this.currentDifficulty];
+
+                if (!availableQuestions || availableQuestions.length === 0) {
+                    document.getElementById('buggy-code').textContent = `No questions available for ${this.currentDifficulty} difficulty and ${this.selectedLanguage} language. Please choose another language or difficulty.`;
+                    document.getElementById('language-tag').textContent = this.selectedLanguage;
+                    document.getElementById('bug-type').textContent = "N/A";
+                    document.getElementById('bug-description').textContent = "No questions loaded.";
+                    this.gameActive = false;
+                    clearInterval(this.timer);
+                    document.getElementById('timer').classList.remove('pulse');
+                    return;
+                }
+
+                this.currentQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+                this.timeLeft = this.timerConfig.initialTime;
+                this.updateDisplay();
+                this.startTimer();
+
+                document.getElementById('language-tag').textContent = this.currentQuestion.language;
+                document.getElementById('bug-type').textContent = this.currentQuestion.bugType;
+                document.getElementById('bug-description').textContent = this.currentQuestion.description;
+                document.getElementById('buggy-code').textContent = this.currentQuestion.buggyCode;
+                document.getElementById('answer-input').value = '';
+                document.getElementById('feedback').classList.add('hidden');
+            }
+
+            showPopup(title, message, isCorrect, onCloseCallback = null) {
+                const popup = document.getElementById('custom-popup');
+                const popupTitle = document.getElementById('popup-title');
+                const popupMessage = document.getElementById('popup-message');
+                const popupContent = document.querySelector('#custom-popup .popup-content');
+
+                popupTitle.textContent = title;
+                popupMessage.innerHTML = message;
+
+                popupContent.classList.remove('popup-success', 'popup-error');
+                if (isCorrect) {
+                    popupContent.classList.add('popup-success');
+                } else {
+                    popupContent.classList.add('popup-error');
+                }
+
+                popup.classList.remove('hidden');
+
+                document.getElementById('popup-close-btn').onclick = () => {
+                    popup.classList.add('hidden');
+                    if (onCloseCallback) {
+                        onCloseCallback();
+                    }
+                };
+            }
+
+            checkAnswer() {
+                if (!this.gameActive || !this.currentQuestion) return;
+
+                const userAnswer = document.getElementById('answer-input').value.trim();
+                const correctAnswer = this.currentQuestion.correctCode.trim();
+
+                const isCorrect = this.compareCode(userAnswer, correctAnswer);
+
+                let title = '';
+                let message = '';
+                let callbackFunction;
+
+                if (isCorrect) {
+                    this.score += this.getDifficultyPoints();
+                    this.timeLeft += this.timerConfig.bonusTimeCorrect;
+                    this.timeLeft = Math.max(0, this.timeLeft - this.timerConfig.penaltyTimeIncorrect);
+
+                    this.questionsCompleted[this.currentDifficulty]++;
+
+                    const levelUpMessage = this.checkLevelAdvancement();
+                    title = '🎉 Correct!';
+                    if (levelUpMessage) {
+                        message = `Great debugging skills! ${levelUpMessage}`;
+                    } else {
+                        message = 'Great debugging skills!';
+                    }
+                    callbackFunction = () => this.loadNewQuestion();
+                } else {
+                    title = '❌ Incorrect!';
+                    message = `Not quite right. Hint: ${this.currentQuestion.hint}<br><br>Expected solution:<br><code>${this.currentQuestion.correctCode}</code>`;
+                    this.score = Math.max(0, this.score - 5);
+                    this.timeLeft = Math.max(0, this.timeLeft - 10);
+                    callbackFunction = () => this.endGame("Game Over! You answered incorrectly.");
+                }
+
+                this.updateDisplay();
+                this.showPopup(title, message, isCorrect, callbackFunction);
+            }
+
+            skipQuestion() {
+                if (!this.gameActive) return;
+
+                const title = '⏭️ Skipped!';
+                const message = `Here's the solution:<br><code>${this.currentQuestion.correctCode}</code><br>Hint: ${this.currentQuestion.hint}`;
+
+                this.score = Math.max(0, this.score - 10);
+                this.timeLeft = Math.max(0, this.timeLeft - this.timerConfig.penaltyTimeSkip);
+                this.updateDisplay();
+                this.showPopup(title, message, false, () => this.endGame("Game Over! You skipped the question."));
+            }
+
+            checkLevelAdvancement() {
+                const currentCompleted = this.questionsCompleted[this.currentDifficulty];
+                let message = '';
+
+                if (currentCompleted >= this.questionsNeededToAdvance) {
+                    if (!this.completedLevels.includes(this.currentDifficulty)) {
+                        this.completedLevels.push(this.currentDifficulty);
+
+                        const currentBtn = document.querySelector(`[data-difficulty="${this.currentDifficulty}"]`);
+                        currentBtn.classList.add('completed');
+
+                        if (this.currentDifficulty === 'easy' && !this.unlockedLevels.includes('medium')) {
+                            this.unlockedLevels.push('medium');
+                            this.unlockLevel('medium');
+                            this.autoAdvanceToLevel('medium');
+                            message = 'Level Complete! 🚀 Advancing to Medium difficulty!';
+                        } else if (this.currentDifficulty === 'medium' && !this.unlockedLevels.includes('hard')) {
+                            this.unlockedLevels.push('hard');
+                            this.unlockLevel('hard');
+                            this.autoAdvanceToLevel('hard');
+                            message = 'Level Complete! 🔥 Advancing to Hard difficulty!';
+                        } else if (this.currentDifficulty === 'hard') {
+                            this.endGame("🏆 You've completed all levels and became a Bug Hunt Champion!");
+                            return null;
+                        }
+                    }
+                }
+
+                return message;
+            }
+
+            unlockLevel(difficulty) {
+                const btn = document.querySelector(`[data-difficulty="${difficulty}"]`);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            }
+
+            autoAdvanceToLevel(difficulty) {
+                setTimeout(() => {
+                    document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+                    const nextBtn = document.querySelector(`[data-difficulty="${difficulty}"]`);
+                    if (nextBtn) {
+                        nextBtn.classList.add('active');
+                    }
+                    this.currentDifficulty = difficulty;
+                    this.updateProgressionInfo();
+
+                    const progressInfo = document.getElementById('progression-info');
+                    if (progressInfo) {
+                        progressInfo.classList.add('auto-advance');
+                        setTimeout(() => {
+                            progressInfo.classList.remove('auto-advance');
+                        }, 3000);
+                    }
+                }, 1500);
+            }
+
+            updateProgressionInfo() {
+                const progressInfo = document.getElementById('progression-info');
+                if (!progressInfo) {
+                    console.error("Progression info element not found!");
+                    return;
+                }
+
+                const currentCompleted = this.questionsCompleted[this.currentDifficulty];
+                const total = this.questionsNeededToAdvance;
+                document.getElementById('questions-completed').textContent = `${currentCompleted}/${total}`;
+
+
+                if (this.completedLevels.includes(this.currentDifficulty)) {
+                    if (this.currentDifficulty === 'hard') {
+                        progressInfo.innerHTML = '🏆 Congratulations! You\'ve completed all levels!';
+                    } else {
+                        progressInfo.innerHTML = `✅ ${this.currentDifficulty.charAt(0).toUpperCase() + this.currentDifficulty.slice(1)} level completed!`;
+                    }
+                } else {
+                    progressInfo.innerHTML = `🎯 Complete ${Math.max(0, total - currentCompleted)} more questions to advance to the next level!`;
+                }
+            }
+
+            compareCode(user, correct) {
+                const normalize = (code) => code.replace(/\s+/g, '').toLowerCase().trim();
+                return normalize(user) === normalize(correct);
+            }
+
+            getDifficultyPoints() {
+                const points = { easy: 10, medium: 20, hard: 30 };
+                return points[this.currentDifficulty];
+            }
+
+            startTimer() {
+                clearInterval(this.timer);
+                const timerElement = document.getElementById('timer');
+                if (!timerElement) {
+                    console.error("Timer element not found!");
+                    return;
+                }
+
+                this.timer = setInterval(() => {
+                    if (!this.gameActive) {
+                        clearInterval(this.timer);
+                        return;
+                    }
+                    this.timeLeft--;
+                    timerElement.textContent = this.timeLeft;
+
+                    if (this.timeLeft <= 10) {
+                        timerElement.classList.add('pulse');
+                    } else {
+                        timerElement.classList.remove('pulse');
+                    }
+
+                    if (this.timeLeft <= 0) {
+                        this.endGame("Time's up! Game Over.");
+                    }
+                }, 1000);
+            }
+
+            endGame(message = null) {
+                this.gameActive = false;
+                clearInterval(this.timer);
+
+                const completionPopup = document.getElementById('completion-popup');
+
+                if (message && message.includes("Champion")) {
+                    document.getElementById('final-score-display').innerHTML = `🏅 Final Score: <strong>${this.score}</strong>`;
+                    document.getElementById('completion-message').innerText = message;
+                    document.getElementById('game-area').classList.add('hidden');
+                    document.querySelector('.game-controls').classList.add('hidden');
+                    document.querySelector('.header').classList.add('hidden');
+                    completionPopup.classList.remove('hidden');
+                } else {
+                    this.showWelcomePage();
+                    if (message) {
+                        console.log(message);
+                    }
+                }
+            }
+
+
+            updateDisplay() {
+                document.getElementById('current-score').textContent = this.score;
+                document.getElementById('timer').textContent = this.timeLeft;
+
+                const currentCompleted = this.questionsCompleted[this.currentDifficulty];
+                const total = this.questionsNeededToAdvance;
+                document.getElementById('questions-completed').textContent = `${currentCompleted}/${total}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const game = new CodeScrambleGame();
+            game.showWelcomePage();
+
+            document.getElementById('welcome-start-btn').addEventListener('click', () => {
+                game.hideWelcomePage();
+                game.startGame();
+            });
+
+            document.getElementById('start-game').addEventListener('click', () => {
+                game.showWelcomePage();
+            });
+            document.getElementById('play-again-btn').addEventListener('click', () => {
+                document.getElementById('completion-popup').classList.add('hidden');
+                game.showWelcomePage();
+            });
+        });
+    </script>
+</body>
+
+</html>
