@@ -1,13 +1,4 @@
 {
-  "config": {
-    "timer": {
-      "initialTime": 60,
-      "bonusTimeCorrect": 5,
-      "penaltyTimeIncorrect": 10,
-      "penaltyTimeSkip": 15
-    }
-  },
-
   "Python": {
     "easy": [
       {

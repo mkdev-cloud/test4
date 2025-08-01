@@ -45,7 +45,7 @@
         }
 
         .welcome-page .instructions-list li::before {
-            content: '👉';
+            content: '';
             position: absolute;
             left: 0;
             color: #764ba2;
@@ -74,20 +74,29 @@
             min-height: 100vh;
             color: #333;
             display: flex;
+            /* Use flexbox for centering content */
             justify-content: center;
+            /* Center horizontally */
             align-items: center;
+            /* Center vertically */
             padding: 20px;
+            /* Add some padding around the content */
         }
 
         .container {
             max-width: 1200px;
             width: 100%;
+            /* Ensure container takes full width on smaller screens */
             margin: 0 auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.95);
+            /* Slightly transparent white background */
             border-radius: 20px;
+            /* More rounded corners for the main container */
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow */
             backdrop-filter: blur(5px);
+            /* Subtle blur effect */
         }
 
         .header {
@@ -97,7 +106,9 @@
 
         .header h1 {
             color: #333;
+            /* Darker text for better contrast on white background */
             font-size: 2.8rem;
+            /* Larger font size */
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -130,15 +141,19 @@
 
         .difficulty-selector,
         .language-selector {
+            /* Added language-selector styling */
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
+            /* Allow wrapping on small screens */
             margin-bottom: 10px;
+            /* Spacing between selectors */
         }
 
         .difficulty-btn,
         .language-btn {
+            /* Combined button styling */
             padding: 10px 20px;
             border: 2px solid #667eea;
             background: white;
@@ -149,11 +164,13 @@
             font-weight: 600;
             position: relative;
             flex-shrink: 0;
+            /* Prevent shrinking */
         }
 
         .difficulty-btn.active,
         .difficulty-btn:hover,
         .language-btn.active,
+        /* Added language-btn active/hover */
         .language-btn:hover {
             background: #667eea;
             color: white;
@@ -170,6 +187,8 @@
             color: #999;
             border-color: #ddd;
         }
+
+        /* Language buttons are not disabled initially, so no separate disabled style for them */
 
         .difficulty-btn.completed {
             background: #28a745;
@@ -218,7 +237,7 @@
             }
 
             to {
-                box-shadow: 0 0 25px rgba(102, 126, 234, 0.9);
+                box_shadow: 0 0 25px rgba(102, 126, 234, 0.9);
             }
         }
 
@@ -227,6 +246,7 @@
             gap: 20px;
             align-items: center;
             flex-wrap: wrap;
+            /* Allow wrapping on small screens */
             justify-content: center;
         }
 
@@ -237,11 +257,13 @@
             text-align: center;
             border: 2px solid #e9ecef;
             min-width: 90px;
+            /* Ensure consistent width */
         }
 
         .score-item strong {
             display: block;
             font-size: 1.8rem;
+            /* Larger score numbers */
             color: #667eea;
             margin-bottom: 5px;
         }
@@ -295,6 +317,7 @@
         .code-content {
             padding: 25px;
             flex-grow: 1;
+            /* Allows content to expand */
             display: flex;
             flex-direction: column;
         }
@@ -305,14 +328,20 @@
             padding: 20px;
             border-radius: 10px;
             font-family: 'Fira Code', 'Courier New', monospace;
+            /* Fira Code if available, fallback to Courier New */
             font-size: 15px;
+            /* Slightly larger code font */
             line-height: 1.6;
             overflow-x: auto;
             margin-bottom: 20px;
             border-left: 5px solid #667eea;
+            /* Thicker border */
             white-space: pre-wrap;
+            /* Preserve whitespace and wrap text */
             word-break: break-word;
+            /* Break long words */
             flex-grow: 1;
+            /* Allow code block to take available space */
         }
 
         .language-tag {
@@ -348,19 +377,24 @@
 
         .answer-section {
             margin-top: auto;
+            /* Push to the bottom of the panel */
         }
 
         .answer-input {
             width: 100%;
             padding: 15px;
+            /* Larger padding */
             border: 2px solid #e9ecef;
             border-radius: 10px;
+            /* More rounded */
             font-size: 15px;
             font-family: 'Fira Code', 'Courier New', monospace;
             margin-bottom: 15px;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             resize: vertical;
+            /* Allow vertical resizing */
             min-height: 100px;
+            /* Minimum height for textarea */
         }
 
         .answer-input:focus {
@@ -372,12 +406,12 @@
         .action-buttons {
             display: flex;
             gap: 15px;
-            justify-content: flex-end;
+            justify-content: center; /* Changed from flex-end to center */
             flex-wrap: wrap;
+            /* Allow wrapping on small screens */
         }
 
-        .check-btn,
-        .skip-btn {
+        .check-btn {
             color: white;
             border: none;
             padding: 12px 25px;
@@ -387,9 +421,6 @@
             transition: all 0.3s ease;
             font-weight: 600;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .check-btn {
             background: #28a745;
         }
 
@@ -397,16 +428,6 @@
             background: #218838;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        .skip-btn {
-            background: #6c757d;
-        }
-
-        .skip-btn:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
         }
 
         .feedback {
@@ -454,16 +475,20 @@
         .timer {
             background: #fff;
             border: 4px solid #667eea;
+            /* Thicker border */
             border-radius: 50%;
             width: 90px;
+            /* Larger timer */
             height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            /* Larger font */
             font-weight: bold;
             color: #667eea;
             flex-shrink: 0;
+            /* Prevent shrinking */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -496,6 +521,7 @@
         @media (max-width: 992px) {
             .game-area {
                 grid-template-columns: 1fr;
+                /* Stack panels vertically */
             }
         }
 
@@ -515,10 +541,12 @@
             .controls-row {
                 flex-direction: column;
                 align-items: stretch;
+                /* Stretch items to fill width */
             }
 
             .difficulty-selector,
             .language-selector,
+            /* Apply to language selector too */
             .score-board {
                 width: 100%;
                 justify-content: space-around;
@@ -532,6 +560,7 @@
 
             .score-item {
                 flex-grow: 1;
+                /* Allow score items to grow */
             }
 
             .timer {
@@ -555,77 +584,13 @@
 
             .action-buttons {
                 flex-direction: column;
+                /* Stack buttons vertically */
                 gap: 10px;
             }
 
-            .check-btn,
-            .skip-btn {
+            .check-btn {
                 width: 100%;
             }
-        }
-
-        /* Custom Popup Styles */
-        #custom-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popup-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-        }
-
-        .popup-content h3 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: #667eea;
-        }
-
-        .popup-content p {
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            text-align: left;
-        }
-
-        #popup-close-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        #popup-close-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
-        }
-
-        .popup-success h3 {
-            color: #28a745;
-        }
-
-        .popup-error h3 {
-            color: #dc3545;
         }
     </style>
 </head>
@@ -656,7 +621,7 @@
         </div>
         <div id="completion-popup" class="welcome-page hidden">
             <h2>🎉 Congratulations!</h2>
-            <p id="completion-message">You've completed all levels and became a Bug Hunt Champion!</p>
+            <p id="completion-message">You've completed all levels and become a Bug Hunt Champion!</p>
             <p id="final-score-display" style="font-size: 1.5rem; color: #444;"></p>
             <button class="start-btn" id="play-again-btn">Play Again</button>
         </div>
@@ -685,7 +650,7 @@
                         <strong id="current-score">0</strong>
                         <span>Score</span>
                     </div>
-
+                    
                     <div class="score-item">
                         <strong id="questions-completed">0/3</strong>
                         <span>Completed</span>
@@ -724,20 +689,11 @@
                             rows="8"></textarea>
                         <div class="action-buttons">
                             <button class="check-btn" id="check-answer">Check Answer</button>
-                            <button class="skip-btn" id="skip-question">Skip Question</button>
                         </div>
                         <div class="feedback hidden" id="feedback"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="custom-popup" class="hidden">
-        <div class="popup-content">
-            <h3 id="popup-title"></h3>
-            <p id="popup-message"></p>
-            <button id="popup-close-btn">OK</button>
         </div>
     </div>
 
@@ -752,12 +708,9 @@
                 this.currentQuestion = null;
                 this.timer = null;
                 this.currentIndex = 0;
-                this.timerConfig = {
-                    initialTime: 60,
-                    bonusTimeCorrect: 5,
-                    penaltyTimeIncorrect: 10,
-                    penaltyTimeSkip: 15
-                };
+                this.timerConfig = {}; // Initialize as empty object, will be loaded from JSON
+                this.gameConfig = {}; // Initialize as empty object, will be loaded from JSON
+
 
                 document.querySelectorAll('.language-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
@@ -770,45 +723,41 @@
 
                 // Auto-progression tracking
                 this.questionsCompleted = { easy: 0, medium: 0, hard: 0 };
-                this.questionsNeededToAdvance = 3;
+                // this.questionsNeededToAdvance will be loaded from gameConfig
                 this.unlockedLevels = ['easy']; // Track which levels are unlocked
                 this.completedLevels = []; // Track completed levels
 
-                this.allBugs = {};
-                this.bugDatabase = {}; // Will be dynamically built
 
-
-                // Assume bugs-mul.json is correctly structured for multiple languages
-                fetch('bugs-mul.json')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.config && data.config.timer) {
-                            this.timerConfig = data.config.timer;
-                        }
-                        delete data.config; // remove config so only language blocks remain
-                        this.allBugs = data;
-                        this.prepareBugDatabase();
-                    })
-                    .catch(err => {
-                        console.error('Failed to load bug data:', err);
-                        alert('Error loading questions. Please ensure bugs-mul.json is available and correctly formatted.');
-                    });
+                Promise.all([
+                    fetch('bugs-mul.json').then(res => res.json()),
+                    fetch('timer-config.json').then(res => res.json()), // Fetch time config
+                    fetch('game-config.json').then(res => res.json())    // Fetch game config
+                ]).then(([bugData, timerData, gameData]) => {
+                    this.timerConfig = timerData; // Assign loaded timer config
+                    this.gameConfig = gameData;   // Assign loaded game config
+                    this.allBugs = bugData;
+                    // Set questionsNeededToAdvance from the loaded config
+                    this.questionsNeededToAdvance = this.gameConfig.questionsNeededToAdvance;
+                    this.prepareBugDatabase();
+                    this.updateProgressionInfo(); // Update info after config is loaded
+                }).catch(err => {
+                    console.error('Failed to load game data:', err);
+                    alert('Error loading game data.');
+                });
 
 
                 this.initializeEventListeners();
-                this.updateProgressionInfo();
                 this.updateDisplay(); // Initial display update
             }
             prepareBugDatabase() {
                 const langData = this.allBugs[this.selectedLanguage];
                 if (!langData) {
+                    // If no data for the selected language, fall back to JavaScript or show a message
                     console.warn(`No questions available for ${this.selectedLanguage}. Falling back to JavaScript.`);
-                    this.bugDatabase = {};
+                    this.bugDatabase = {}; // Clear current bug database
+                    // Optionally, you might want to re-select JavaScript as the active language on the UI
+                    // document.querySelector('.language-btn[data-language="JavaScript"]').click();
+                    // Or, disable the start game button if no questions are available for any selected language
                     return;
                 }
 
@@ -831,17 +780,18 @@
                 document.getElementById("bug-description").textContent = this.currentQuestion.description;
                 document.getElementById("buggy-code").textContent = this.currentQuestion.buggyCode;
                 document.getElementById("answer-input").value = "";
-                document.getElementById("feedback").classList.add("hidden");
+                // No longer show feedback div directly, remove this line:
+                // document.getElementById("feedback").classList.add("hidden"); 
             }
             showWelcomePage() {
                 document.getElementById('welcome-page').classList.remove('hidden');
                 document.querySelector('.header').classList.add('hidden');
                 document.querySelector('.game-controls').classList.add('hidden');
                 document.getElementById('game-area').classList.add('hidden');
-                document.getElementById('completion-popup').classList.add('hidden');
-                clearInterval(this.timer);
-                this.gameActive = false;
-                document.getElementById('timer').classList.remove('pulse');
+                clearInterval(this.timer); // Stop the timer if returning to welcome page
+                this.gameActive = false; // Deactivate game
+                document.getElementById('timer').classList.remove('pulse'); // Remove pulse effect
+                document.getElementById('completion-popup').classList.add('hidden'); // Ensure completion popup is hidden
             }
 
             hideWelcomePage() {
@@ -852,6 +802,7 @@
             }
 
             initializeEventListeners() {
+                // Difficulty selection (only for unlocked levels)
                 document.querySelectorAll('.difficulty-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const targetDifficulty = e.target.dataset.difficulty;
@@ -860,6 +811,7 @@
                             e.target.classList.add('active');
                             this.currentDifficulty = targetDifficulty;
                             this.updateProgressionInfo();
+                            // If game is active, load a new question for the selected difficulty
                             if (this.gameActive) {
                                 this.loadNewQuestion();
                             }
@@ -867,22 +819,25 @@
                     });
                 });
 
+                // Language selection - these event listeners are now for the welcome page's buttons
                 document.querySelectorAll('.language-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
                         e.target.classList.add('active');
                         this.selectedLanguage = e.target.dataset.language;
-                        this.prepareBugDatabase();
+                        this.prepareBugDatabase(); // Important: re-prepare the database for the new language
+                        // No need to load a new question here, as it's the welcome screen.
                     });
                 });
 
-                document.getElementById('start-game').addEventListener('click', () => this.showWelcomePage());
+                // Game controls
+                document.getElementById('start-game').addEventListener('click', () => this.showWelcomePage()); // Restart Game button
                 document.getElementById('check-answer').addEventListener('click', () => this.checkAnswer());
-                document.getElementById('skip-question').addEventListener('click', () => this.skipQuestion());
 
+                // Enter key to submit answer (Ctrl+Enter for multi-line support)
                 document.getElementById('answer-input').addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' && e.ctrlKey) {
-                        e.preventDefault();
+                        e.preventDefault(); // Prevent new line in textarea
                         this.checkAnswer();
                     }
                 });
@@ -892,7 +847,9 @@
                 this.gameActive = true;
                 this.score = 0;
                 this.timeLeft = this.timerConfig.initialTime;
+                // Reset questions completed for all difficulties
                 this.questionsCompleted = { easy: 0, medium: 0, hard: 0 };
+                // Reset unlocked/completed levels
                 this.unlockedLevels = ['easy'];
                 this.completedLevels = [];
                 document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -906,9 +863,14 @@
                 document.querySelector('[data-difficulty="easy"]').classList.add('active');
                 this.currentDifficulty = 'easy';
 
+                // Ensure the initially selected language button is active in the game context (though selection is on welcome)
+                // This logic might be slightly redundant if language selection only happens on welcome.
+                // However, if we ever re-introduce language selection in-game, this would be useful.
+                // For now, prepareBugDatabase should have already set the correct questions based on welcome page selection.
+
                 document.getElementById('game-area').classList.remove('hidden');
                 document.getElementById('progression-info').classList.remove('hidden');
-                document.getElementById('start-game').textContent = 'Restart Game';
+                document.getElementById('start-game').textContent = 'Restart Game'; // Change button text
 
                 this.loadNewQuestion();
                 this.startTimer();
@@ -918,6 +880,8 @@
 
 
             loadNewQuestion() {
+                // Filter questions by current difficulty and selected language
+                // Removed redundant language filter, as prepareBugDatabase already handles it.
                 const availableQuestions = this.bugDatabase[this.currentDifficulty];
 
                 if (!availableQuestions || availableQuestions.length === 0) {
@@ -925,15 +889,18 @@
                     document.getElementById('language-tag').textContent = this.selectedLanguage;
                     document.getElementById('bug-type').textContent = "N/A";
                     document.getElementById('bug-description').textContent = "No questions loaded.";
-                    this.gameActive = false;
+                    // Optionally, disable game interaction or prompt user to change selection
+                    this.gameActive = false; // Stop the game if no questions
                     clearInterval(this.timer);
                     document.getElementById('timer').classList.remove('pulse');
+                    alert("No questions available for the current selection. Please choose another language or difficulty."); // Use alert for direct feedback
                     return;
                 }
 
+                // Pick a random question from the filtered list
                 this.currentQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
-                this.timeLeft = this.timerConfig.initialTime;
-                this.updateDisplay();
+                this.timeLeft = this.timerConfig.initialTime; // reset timer per question
+                this.updateDisplay();                          // update UI display immediately
                 this.startTimer();
 
                 document.getElementById('language-tag').textContent = this.currentQuestion.language;
@@ -941,33 +908,8 @@
                 document.getElementById('bug-description').textContent = this.currentQuestion.description;
                 document.getElementById('buggy-code').textContent = this.currentQuestion.buggyCode;
                 document.getElementById('answer-input').value = '';
-                document.getElementById('feedback').classList.add('hidden');
-            }
-
-            showPopup(title, message, isCorrect, onCloseCallback = null) {
-                const popup = document.getElementById('custom-popup');
-                const popupTitle = document.getElementById('popup-title');
-                const popupMessage = document.getElementById('popup-message');
-                const popupContent = document.querySelector('#custom-popup .popup-content');
-
-                popupTitle.textContent = title;
-                popupMessage.innerHTML = message;
-
-                popupContent.classList.remove('popup-success', 'popup-error');
-                if (isCorrect) {
-                    popupContent.classList.add('popup-success');
-                } else {
-                    popupContent.classList.add('popup-error');
-                }
-
-                popup.classList.remove('hidden');
-
-                document.getElementById('popup-close-btn').onclick = () => {
-                    popup.classList.add('hidden');
-                    if (onCloseCallback) {
-                        onCloseCallback();
-                    }
-                };
+                // The feedback div is no longer directly used for displaying success/failure messages
+                // document.getElementById('feedback').classList.add('hidden'); 
             }
 
             checkAnswer() {
@@ -978,60 +920,43 @@
 
                 const isCorrect = this.compareCode(userAnswer, correctAnswer);
 
-                let title = '';
-                let message = '';
-                let callbackFunction;
-
                 if (isCorrect) {
-                    this.score += this.getDifficultyPoints();
-                    this.timeLeft += this.timerConfig.bonusTimeCorrect;
-                    this.timeLeft = Math.max(0, this.timeLeft - this.timerConfig.penaltyTimeIncorrect);
+                    this.score += this.getDifficultyPoints(); // Score adjustment remains
 
+                    // Track completion for auto-progression
                     this.questionsCompleted[this.currentDifficulty]++;
 
+                    // Check for level advancement
                     const levelUpMessage = this.checkLevelAdvancement();
-                    title = '🎉 Correct!';
                     if (levelUpMessage) {
-                        message = `Great debugging skills! ${levelUpMessage}`;
+                        alert(`🎉 Correct! ${levelUpMessage}`);
                     } else {
-                        message = 'Great debugging skills!';
+                        alert('🎉 Correct! Great debugging skills!');
                     }
-                    callbackFunction = () => this.loadNewQuestion();
+                    this.updateDisplay();
+                    setTimeout(() => this.loadNewQuestion(), 3000);
                 } else {
-                    title = '❌ Incorrect!';
-                    message = `Not quite right. Hint: ${this.currentQuestion.hint}<br><br>Expected solution:<br><code>${this.currentQuestion.correctCode}</code>`;
-                    this.score = Math.max(0, this.score - 5);
-                    this.timeLeft = Math.max(0, this.timeLeft - 10);
-                    callbackFunction = () => this.endGame("Game Over! You answered incorrectly.");
+                    // Incorrect answer: Game Over
+                    alert(`❌ Incorrect! Game Over.\n\nHint: ${this.currentQuestion.hint}\n\nExpected solution:\n${this.currentQuestion.correctCode}`);
+                    this.endGame("Game Over. Your answer was incorrect."); // Calls endGame which handles navigation
                 }
-
-                this.updateDisplay();
-                this.showPopup(title, message, isCorrect, callbackFunction);
-            }
-
-            skipQuestion() {
-                if (!this.gameActive) return;
-
-                const title = '⏭️ Skipped!';
-                const message = `Here's the solution:<br><code>${this.currentQuestion.correctCode}</code><br>Hint: ${this.currentQuestion.hint}`;
-
-                this.score = Math.max(0, this.score - 10);
-                this.timeLeft = Math.max(0, this.timeLeft - this.timerConfig.penaltyTimeSkip);
-                this.updateDisplay();
-                this.showPopup(title, message, false, () => this.endGame("Game Over! You skipped the question."));
             }
 
             checkLevelAdvancement() {
                 const currentCompleted = this.questionsCompleted[this.currentDifficulty];
+                const questionsNeeded = this.questionsNeededToAdvance[this.currentDifficulty]; // Get specific for current difficulty
                 let message = '';
 
-                if (currentCompleted >= this.questionsNeededToAdvance) {
+                // Check if current level is completed
+                if (currentCompleted >= questionsNeeded) {
                     if (!this.completedLevels.includes(this.currentDifficulty)) {
                         this.completedLevels.push(this.currentDifficulty);
 
+                        // Mark current difficulty as completed
                         const currentBtn = document.querySelector(`[data-difficulty="${this.currentDifficulty}"]`);
                         currentBtn.classList.add('completed');
 
+                        // Unlock next level
                         if (this.currentDifficulty === 'easy' && !this.unlockedLevels.includes('medium')) {
                             this.unlockedLevels.push('medium');
                             this.unlockLevel('medium');
@@ -1043,8 +968,8 @@
                             this.autoAdvanceToLevel('hard');
                             message = 'Level Complete! 🔥 Advancing to Hard difficulty!';
                         } else if (this.currentDifficulty === 'hard') {
-                            this.endGame("🏆 You've completed all levels and became a Bug Hunt Champion!");
-                            return null;
+                            this.endGame("🏆 You've completed the Hard level and became a Bug Hunt Champion!");
+                            return null; // prevent further question
                         }
                     }
                 }
@@ -1062,6 +987,7 @@
             }
 
             autoAdvanceToLevel(difficulty) {
+                // Auto-advance to next level after a short delay
                 setTimeout(() => {
                     document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
                     const nextBtn = document.querySelector(`[data-difficulty="${difficulty}"]`);
@@ -1071,6 +997,7 @@
                     this.currentDifficulty = difficulty;
                     this.updateProgressionInfo();
 
+                    // Add visual feedback for auto-advancement
                     const progressInfo = document.getElementById('progression-info');
                     if (progressInfo) {
                         progressInfo.classList.add('auto-advance');
@@ -1078,6 +1005,8 @@
                             progressInfo.classList.remove('auto-advance');
                         }, 3000);
                     }
+                    // Load a new question after auto-advancement
+                    this.loadNewQuestion();
                 }, 1500);
             }
 
@@ -1089,7 +1018,7 @@
                 }
 
                 const currentCompleted = this.questionsCompleted[this.currentDifficulty];
-                const total = this.questionsNeededToAdvance;
+                const total = this.questionsNeededToAdvance[this.currentDifficulty]; // Get specific for current difficulty
                 document.getElementById('questions-completed').textContent = `${currentCompleted}/${total}`;
 
 
@@ -1105,6 +1034,7 @@
             }
 
             compareCode(user, correct) {
+                // Remove all whitespace and convert to lowercase for comparison
                 const normalize = (code) => code.replace(/\s+/g, '').toLowerCase().trim();
                 return normalize(user) === normalize(correct);
             }
@@ -1146,20 +1076,17 @@
                 this.gameActive = false;
                 clearInterval(this.timer);
 
-                const completionPopup = document.getElementById('completion-popup');
+                // Hide game UI
+                document.getElementById('game-area').classList.add('hidden');
+                document.querySelector('.game-controls').classList.add('hidden');
+                document.querySelector('.header').classList.add('hidden');
 
-                if (message && message.includes("Champion")) {
+                // Show final completion popup
+                const popup = document.getElementById('completion-popup');
+                if (popup) {
                     document.getElementById('final-score-display').innerHTML = `🏅 Final Score: <strong>${this.score}</strong>`;
-                    document.getElementById('completion-message').innerText = message;
-                    document.getElementById('game-area').classList.add('hidden');
-                    document.querySelector('.game-controls').classList.add('hidden');
-                    document.querySelector('.header').classList.add('hidden');
-                    completionPopup.classList.remove('hidden');
-                } else {
-                    this.showWelcomePage();
-                    if (message) {
-                        console.log(message);
-                    }
+                    document.getElementById('completion-message').innerText = message || 'Game Over. Try again!';
+                    popup.classList.remove('hidden');
                 }
             }
 
@@ -1169,7 +1096,8 @@
                 document.getElementById('timer').textContent = this.timeLeft;
 
                 const currentCompleted = this.questionsCompleted[this.currentDifficulty];
-                const total = this.questionsNeededToAdvance;
+                // Ensure questionsNeededToAdvance is loaded before accessing its properties
+                const total = this.gameConfig.questionsNeededToAdvance ? this.gameConfig.questionsNeededToAdvance[this.currentDifficulty] : 3; // Default to 3 if not loaded
                 document.getElementById('questions-completed').textContent = `${currentCompleted}/${total}`;
             }
         }
@@ -1183,6 +1111,7 @@
                 game.startGame();
             });
 
+            // "Restart Game" button (which is #start-game) now redirects to the welcome page
             document.getElementById('start-game').addEventListener('click', () => {
                 game.showWelcomePage();
             });
@@ -1191,6 +1120,7 @@
                 game.showWelcomePage();
             });
         });
+
     </script>
 </body>
 

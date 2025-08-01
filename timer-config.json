@@ -1,0 +1,5 @@
+{
+  "initialTime": 60,
+  "bonusTimeCorrect": 5,
+  "penaltyTimeIncorrect": 10
+}
